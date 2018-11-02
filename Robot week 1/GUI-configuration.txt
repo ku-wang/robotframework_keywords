@@ -1,0 +1,96 @@
+*** Settings ***
+Library           Selenium2Library
+
+*** Keywords ***
+Add netgroup window
+    [Arguments]    ${_ip}
+    [Documentation]    As the title describ.
+    ...    Add the netgroup window.
+    Open Home    ${_ip}
+    Open configuration page
+    Click Element    //*[@id="category-nfsSettings"]/div
+    Wait Until Element Is Visible    //div[text()='Netgroup Settings' and @class='title']
+    sleep    1
+    Click Element    //div[text()='Netgroup Settings' and @class='title']
+    Wait Until Element Is Visible    //span[text()='add']
+    Click Element    //span[text()='add']
+    Wait Until Element Is Visible    //h3[text()='Add Netgroup']
+
+Open Home
+    [Arguments]    ${ip_}    ${username}=admin    ${password}=P@ssw0rd
+    [Documentation]    Navigate to CC home page.
+    ...    'https:\\<CC IP>' is necessary.
+    Open Browser    https://10.180.207.192    chrome
+    Maximize Browser Window
+    Input Text    //input[contains(@id,'undefined-undefined-Username-')]    ${username}
+    Input Text    //input[contains(@id,'undefined-undefined-Password-')]    ${password}
+    Click Element    //*[@id="content"]/div/div/div/div[2]/button/div/span
+    Wait Until Element Contains    //*[@id="content"]/div/div[1]/header/div[2]/div/div    HOME
+
+Open NFSv4-Settings
+    [Arguments]    ${ip_}
+    [Documentation]    Navigate to "NFSv4 Settings".
+    ...
+    ...    "https:\\<cc ip>" is necessary.
+    Open Home    ${ip_}
+    Open configuration page
+    sleep    2
+    Click Element    //*[@id="category-nfsSettings"]/div
+    sleep    1
+    Click Element    //*[@id="configSections-nfsSettings"]/div[2]/div[2]/div[1]/div/div/div[2]
+    sleep    1
+
+Click Cancle button
+    Run Keyword And Continue On Failure    Click Element    //*[@id="content"]/div/div[3]/div/div[2]/div[4]/div/div[2]/button/div/span
+
+Empty v4 input
+    [Arguments]    ${color_}
+    ${value_exports}    Get Element Attribute    //input[@id='nfsv4RootAccess']    value
+    ${length_exports}    Get Length    ${value_exports}
+    : FOR    ${i}    IN RANGE    ${length_exports}
+    \    Press Key    //input[@id='nfsv4RootAccess']    \ue003\ue017
+    ${color_2}    Get Element Attribute    //div[@class='confirm']/div/button[1]    style
+    Run Keyword And Continue On Failure    Should Not Contain    ${color_2}    ${color_}
+
+Input invalid text
+    [Arguments]    ${invalid}    ${color_}
+    Input Text    //*[@id="nfsv4RootAccess"]    ${invalid}
+    Wait Until Element Contains    //*[@id="content"]/div/div[3]/div/div[2]/div[4]/div/div[1]/div[1]    Pending Changes
+    ${color_1}    Get Element Attribute    //div[@class='confirm']/div/button[1]    style
+    Run Keyword And Continue On Failure    Should Not Contain    ${color_1}    ${color_}
+
+Open configuration page
+    [Documentation]    Navigate to Configuration page.
+    Wait Until Element Contains    //*[@id="content"]/div/div[3]/div/div[2]/div[1]/div[3]/span    Configuration
+    Click Element    //*[@id="content"]/div/div[3]/div/div[2]/div[1]/div[3]/div/img
+
+Add netgroup
+    [Arguments]    ${_group name}    ${_host value}
+    [Documentation]    Add a new netgroup.
+    Input Text    //input[@label='Name:']    ${_group name}
+    Input Text    //input[@label='Host(s):']    ${_host value}
+    Run Keyword And Continue On Failure    Click Element    //*[@id='type']/div[1]
+    Run Keyword And Continue On Failure    Click Element    //div[text()='Hosts']
+    Wait Until Element Is Enabled    //div[@style='display: flex; justify-content: flex-end;']/button[2]
+    sleep    2
+    Run Keyword And Continue On Failure    Click Button    //span[text()='Add']/../..
+    Wait Until Element Is Visible    //span[text()='save']/../..
+
+Click save button
+    Run Keyword And Continue On Failure    Click Button    //span[text()='save']/../..
+
+Force clear value
+    [Arguments]    ${lactor}    ${value_}
+    [Documentation]    Force delete the value on the input fields.
+    ...    <Lactor> and <attribute> (like 'id' 'name') is necessary.
+    ${value_exports}    Get Element Attribute    ${lactor}    ${value_}
+    ${length_exports}    Get Length    ${value_exports}
+    : FOR    ${i}    IN RANGE    ${length_exports}
+    \    Press Key    ${lactor}    \ue003\ue017
+
+Select save and cacel
+    [Arguments]    ${save}    ${cancel}
+    [Documentation]    Click the SAVE/Cancel button.
+    ...    necessary args <save> or <cancel>.
+    Run Keyword If    '${save}'=='save'    Click Button    //span[text()='save']/../..
+    Run Keyword If    Click Element    //*[@id="content"]/div/div[3]/div/div[2]/div[4]/div/div[2]/button/div/span
