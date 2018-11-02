@@ -1,0 +1,58 @@
+*** Settings ***
+Library           Selenium2Library
+Library           SSHLibrary
+Variables         var.py
+Resource          Gui_keyword.robot
+
+*** Test Cases ***
+QT-45192 GUI-Configuration-NFS-NFS-Check the text display
+    [Documentation]    On add nfs window,check the text display.
+    ...
+    ...    Describe for every ${var}:
+    ...    ${ip}: your cc's ip address.
+    ...    @{userinfo}: the list include <username>/<password>
+    [Timeout]    3 minutes
+    # Go to 'NFS Exports' page
+    Navigate page    ${ip}    Configuration    @{user_info}
+    sleep    1
+    Click Element    //div[@id='category-nfsSettings']
+    sleep    1
+    Click Element    //div[@class='title' and text()='NFS Exports']
+    Wait Until Element Is Enabled    //div[@class='config-button-group']/button[1]
+    Text exist handle    //div[@class='table-row header']/div[3]    Host Set
+    # Add nfs-export window
+    Click Element    //div[@class='config-button-group']/button[1]
+    Text exist handle    //h3    Add Export
+    # Disable the "use networks"
+    Run Keyword And Continue On Failure    Text exist handle    //label[@for='hosts']    Host(s)
+    # Enable the "use networks"
+    sleep    1
+    Click Element    //input[@id='networkMode']
+    Run Keyword And Continue On Failure    Text exist handle    //label[@for='hosts']    Networks
+    #close the broser
+    Close Browser
+
+QT-45195 GUI-Configuration-NFS Settings-NFS Exports-Double Click 'Delete' Button
+    [Documentation]    Select the exist nfs-export.
+    ...    Double click 'Delete' button, make sure should not cancel delete.
+    ...
+    # Navigate to NFS-Export and check the add-export window
+    Navigate page    ${ip}    Configuration    @{user_info}
+    sleep    1
+    Click Element    //div[@id='category-nfsSettings']
+    sleep    1
+    Click Element    //div[@class='title' and text()='NFS Exports']
+    Wait Until Element Is Enabled    //div[@class='config-button-group']/button[1]
+    Click Element    //div[@class='config-button-group']/button[1]
+    Text exist handle    //h3    Add Export
+    # Add a valid nfs-export
+    Add a nfs-export    10.180.128.5
+    # Select one or more ,Double click 'Delete' button.
+    Wait Until Element Is Not Visible    //div[@class='title' and text()='Pending Changes']    10
+    Click Element    //div[@class='table-row header']/div[1]
+    Click Element    //div[@class='config-button-group']/button[2]
+    Click Element    //div[@class='config-button-group']/button[2]
+    sleep    1
+    Run Keyword And Continue On Failure    Element Should Be Visible    //div[@class='title' and text()='Pending Changes']
+    # close
+    Close Browser

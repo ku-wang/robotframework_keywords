@@ -1,0 +1,23 @@
+*** Settings ***
+Library           requests
+Library           json
+Library           RequestsLibrary
+Library           Collections
+Library           Selenium2Library
+Resource          keywords.txt
+
+*** Test Cases ***
+t1
+    Create Session    github    https://api.github.com
+    ${rsp}=    Get Request    github    /users/bulkan
+    Should Be Equal As Strings    ${rsp.status_code}    200
+    Dictionary Should Contain Value    ${rsp.json()}    Bulkan Evcimen
+    ${msg}=    Run Keyword And Expect Error    *    Open Browser    https://www.baidu.com
+    Should Contain    ${msg}    WebDriverException: Message
+    log    2
+
+t2
+    go to home
+    open ha box
+    if can't input
+    Close Browser

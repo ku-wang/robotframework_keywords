@@ -1,0 +1,22 @@
+*** Settings ***
+Library           Selenium2Library
+
+*** Keywords ***
+go to home
+    Open Browser    https://10.180.203.228    chrome
+    Input Text    //input[contains(@id,'undefined-undefined-Username-')]    admin
+    Input Text    //input[contains(@id,'undefined-undefined-Password-')]    P@ssw0rd
+    Click Element    //span[text()='Log In']
+    Wait Until Element Contains    //div[@class='header-tab-button home']    HOME
+
+open ha box
+    Click Element    //span[@class='icon-text' and text()='Configuration']
+    sleep    2
+    Click Element    //div[text()='High Availability']
+    sleep    2
+    Click Element    //div[@class='table-row-col' and text()='Local']/following-sibling::div[1]/div/div[2]
+    sleep    2
+
+if can't input
+    ${msg}=    Run Keyword And Expect Error    *    Input Text    //input[@name='hostActive']    test
+    Should Contain    ${msg}    InvalidElementStateException: Message:
