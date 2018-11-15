@@ -1,0 +1,33 @@
+*** Settings ***
+Resource          ../keywords/Configuration-page.robot
+Resource          ../keywords/NFS_long_step.robot
+Resource          ../keywords/SSH.robot
+Library           Selenium2Library
+Resource          ../Xpath/Configuration_page/NFS-Settings/nfs_settings.robot
+Resource          ../Xpath/Configuration_page/NFS-Settings/nfsv4-setings.robot
+Resource          ../Xpath/Main_page/Navigate_manu.txt
+
+*** Test Cases ***
+QT-45226 GUI-Configuration-NFS Settings-NFS v4 settings-Cannot mount using v4 after disable NFS V4 settings
+    [Setup]    Open Browser    https://10.180.205.34    chrome
+    Navigate to page    admin    P@ssw0rd    Configuration
+    [Teardown]    Close Browser
+
+QT-45222 GUI-Configuration-NFS Settings-NFS v4 settings- The settings is saved in /etc/exports
+    [Setup]    Open Browser    https://10.180.205.34    chrome
+    #1 Go to Add nfs window
+    Navigate to page    admin    P@ssw0rd    Configuration
+    add_exports_window    x    x    x
+    #2 Add a plex nfs
+    add plex nfs    x    x
+    #3 Add plex nfsv4
+    xx
+    #4 Go to cli,check the exports
+    SSH_to_target_client
+    #5 update sec on webui
+    #6 Repeat #4
+    [Teardown]    Close Browser
+
+c3
+    SSH_to_target_client    10.180.203.235    support    P@ssw0rd
+    Close Connection
