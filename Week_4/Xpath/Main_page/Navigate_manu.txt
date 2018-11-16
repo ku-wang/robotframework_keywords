@@ -1,0 +1,26 @@
+*** Variables ***
+${configurationLnk}    //span[contains(text(),'Configuration')]
+${configurationLbl}    //div[contains(text(),'CONFIGURATION')]
+${systemSettingsOpt}    //div[contains(text(),'System Settings')]
+${networkSettingsOpt}    //div[contains(text(),'Network Settings')]
+${monitoringOpt}    //div[contains(text(),'Monitoring')]
+${encryptionSettingsOpt}    //div[contains(text(),'Encryption Settings')]
+${cloudFSSettingsOpt}    id=category-cloudFSSettings
+${smbSettingsOpt}    id=category-smbSettings
+${nfsSettingsOpt}    //div[@id='category-nfsSettings']
+${snapshotSettingsOpt}    //div[contains(text(),'Snapshot Settings')]
+${smartCacheSettingsOpt}    //div[contains(text(),'Smart Cache Settings')]
+${highAvailabilityOpt}    //div[contains(text(),'High Availability')]
+${activeDirectoryOpt}    //div[contains(text(),'Active Directory')]
+${licenseManagerOpt}    //div[contains(text(),'License Manager')]
+${diskExpansionOpt}    //div[contains(text(),'Disk Expansion')]
+${pendingChangesLbl}    //div[contains(text(),'Pending Changes')]
+${saveBtn}        //div[@class='confirm']//span[text()='save']/ancestor::button
+${configUpdatedLbl}    //div[text()='Config was updated.']
+${pendingChangesSaveChangesBtn}    //div[@class='changed-fields']//button[./div//span[text()='save']]
+${pendingChangesCancleChangesBtn}    //div[@class='changed-fields']//button[./div//span[text()='Cancel Changes']]
+${disconnectedLbl}    //h3[text()='Oops! You are disconnected']
+${okBtn}          //button[.//span[text()='OK']]
+${savePendingChangeYesBtn}    //button[.//span[text()='yes']]
+${pending_save}    //span[text()='save']/../..
+${pending_all}    //div[@class='title' and text()='Pending Changes']

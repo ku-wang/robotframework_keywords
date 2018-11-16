@@ -1,0 +1,63 @@
+#userinfo
+ip_address: https://10.180.131.254
+username: admin
+password: P@ssw0rd
+#nfs_test_info
+host_networks: 10.180.128.1
+#page
+page:  
+  p1: CloudFS
+  p2: Dashboard
+  p3: Configuration
+  p4: Maintenance
+  p5: Notification Center
+#nfsn:export
+nfs1: 
+  n1: 0
+  n2: /cloudfs/ljcc33
+  n3: Read-write
+  n4: \Yes
+  n5: \Yes
+  n6: empty
+  n7: 10.180.0.0/16
+  n8: test
+nfs2:
+  n1: 1
+  n2: /cloudfs/ljcc33
+  n3: Read-write
+  n4: \Yes
+  n5: \Yes
+  n6: empty
+  n7: 10.180.207.99
+  n8: test
+nfs_cli_1:
+  s1: 10.180.131.254
+  scu: support
+  scp: P@ssw0rd
+  s4: k746-1
+  c1: 10.180.207.99
+#nfsv4:info
+v4_info_1:
+  v1: 0
+  v2: ad
+  v3: krb5i
+  v4: 10.180.207.99
+  v5: 1
+v4_info_11:
+  v1: 1
+  v2: ad
+  v3: krb5p
+  v4: 10.180.128.1
+  v5: 1
+v4_info_2:
+  v1: 0
+  v2: empty
+  v3: empty
+  v4: empty
+  v5: 1
+v4_info_22:
+  v1: 0
+  v2: none
+  v3: empty
+  v4: empty
+  v5: 1

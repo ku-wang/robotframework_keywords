@@ -1,0 +1,57 @@
+*** Settings ***
+Resource          ../keywords/Configuration-page.robot
+Resource          ../keywords/NFS_long_step.robot
+Resource          ../keywords/SSH.robot
+Library           Selenium2Library
+Resource          ../Xpath/Configuration_page/NFS-Settings/nfs_settings.robot
+Resource          ../Xpath/Configuration_page/NFS-Settings/nfsv4-setings.robot
+Resource          ../Xpath/Main_page/Navigate_manu.txt
+Library           SSHLibrary
+Resource          ../keywords/setup_and_teardown_keywords.robot
+Variables         ../test_info/test.yaml
+
+*** Test Cases ***
+QT-45226 GUI-Configuration-NFS Settings-NFS v4 settings-Cannot mount using v4 after disable NFS V4 settings
+    [Documentation]    NFSv4 mount successfiully only the v4 is enable.
+    [Tags]    Plan A    Plan B
+    [Setup]    Open Browser    ${ip_address}    chrome
+    [Timeout]    3 minutes
+    #1 Go to add-export page
+    Navigate to page    ${username}    ${password}    ${page.p3}
+    add_exports_window
+    #2 Add a nfs-export
+    add plex nfs    ${nfs1}
+    #3 Disable v4
+    #4 SSH to target client
+    SSH_to_target_client    ${nfs_cli_1}
+    #5 Do mount
+    mount_fail_and_cleanup    ${nfs_cli_1}
+    #6 Enable v4
+    plex_V4_Mode    ${v4_info_2}
+    #7 Mount and check results
+    SSH_to_target_client    ${nfs_cli_1}
+    mount_and_check_list    ${nfs_cli_1.s1}    ${nfs_cli_1.s4}
+    cleanup_mount
+    [Teardown]    close_con_and_browser
+
+QT-45222 GUI-Configuration-NFS Settings-NFS v4 settings- The settings is saved in /etc/exports
+    [Documentation]    The /etc/exports should save the nfs info.
+    ...    Include nfs-share , security.
+    [Tags]    Plan A    Plan B
+    [Setup]    Open Browser    ${ip_address}    chrome
+    [Timeout]    3 minutes
+    #1 Go to Add nfs window
+    Navigate to page    ${username}    ${password}    ${page.p3}
+    add_exports_window
+    #2 Add a plex nfs
+    add plex nfs    ${nfs2}
+    #3 Add plex nfsv4
+    plex_V4_Mode    ${v4_info_1}
+    #4 Go to cli,check the exports
+    SSH_to_target_server    ${nfs_cli_1}
+    check_etc_exports    ${v4_info_1.v3}    ${v4_info_1.v4}
+    #5 Update sec on webui
+    plex_V4_Mode    ${v4_info_11}
+    #6 Repeat #4
+    check_etc_exports    ${v4_info_11.v3}    ${v4_info_11.v4}
+    [Teardown]    close_con_and_browser
