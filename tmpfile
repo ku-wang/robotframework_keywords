@@ -1,0 +1,12 @@
+CheckMountstatus
+    [Arguments]    ${cli_info}
+    [Documentation]    If mount failed,get the fail info. IF mount successfully,make sure list the share files successfully.
+    Open Connection    ${cli_info.s1}    22    timeout=20
+    Login    ${cli_info.scu}    ${cli_info.scp}
+    sleep    1
+    write    mkdir /mnt/nfs
+    write    mount -t nfs -o vers=4 ${cli_info.s1}:/cloudfs/${cli_info.s4} /mnt/nfs
+    ${ou1}    Read    delay=0.8s
+    Should Contain    ${ou1}    version mismatch; low version = 2, high version = 3
+    Execute Command    rm -rf /mnt/nfs
+    Close Connection
